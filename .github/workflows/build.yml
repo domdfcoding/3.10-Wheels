@@ -27,7 +27,8 @@ jobs:
           python -VV
           python -m site
           python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
-          python -m pip install "setuptools<49.2.0" "wheel>=0.36.2" "Cython>=0.29.21,<3.0"
+          python -m pip install "setuptools<49.2.0" "wheel>=0.36.2"
+          python -m pip install git+https://github.com/cython/cython@5377ae7973bbfa89aa5431fb3e5f5b133231e6ba
 
       - name: "Build Wheel"
         run: "python -m pip wheel --no-deps numpy==${{ matrix.version.numpy-version }} --no-build-isolation --wheel-dir ./wheels/numpy --verbose"
@@ -47,7 +48,7 @@ jobs:
       fail-fast: False
       matrix:
         version:
-         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", pandas-version: "1.2.0"}
+         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", pandas-version: "1.2.0rc0"}
          - {platform: "ubuntu-20.04", numpy-version: "1.19.4", pandas-version: "1.1.5"}
          - {platform: "ubuntu-20.04", numpy-version: "1.19.4", pandas-version: "1.0.5"}
 
@@ -70,7 +71,8 @@ jobs:
           python -VV
           python -m site
           python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
-          python -m pip install setuptools "wheel>=0.36.2" "Cython>=0.29.21,<3"
+          python -m pip install setuptools "wheel>=0.36.2"
+          python -m pip install git+https://github.com/cython/cython@5377ae7973bbfa89aa5431fb3e5f5b133231e6ba
           python -m pip install ./wheels/numpy/*.whl
 
       - name: "Build Wheel"
@@ -84,7 +86,7 @@ jobs:
 
   matplotlib:
     needs: numpy
-    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-pd-${{ matrix.version.matplotlib-version }}"
+    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-mpl-${{ matrix.version.matplotlib-version }}"
     runs-on: ${{ matrix.version.platform }}
 
     strategy:
