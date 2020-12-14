@@ -39,3 +39,47 @@ jobs:
         with:
           name: "numpy-${{ matrix.version.numpy-version }}-${{ matrix.version.platform }}"
           path: ./wheels/numpy/*.whl
+
+  pandas:
+    needs: numpy
+    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.pandas-version }}"
+    runs-on: ${{ matrix.version.platform }}
+    env:
+      USING_COVERAGE: '3.6,3.7,3.8,3.9'
+
+    strategy:
+      fail-fast: False
+      matrix:
+        version:
+         - {platform: "ubuntu-20.04", pandas-version: "1.19.4"}
+
+    steps:
+
+      - name: Setup Python 🐍
+        uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.10.0-alpha.3"
+
+      - name: Download Numpy Wheel
+        uses: actions/download-artifact@v2
+        with:
+          name: "numpy-${{ matrix.version.numpy-version }}-${{ matrix.version.platform }}"
+          path: ./wheels/numpy/
+
+
+      - name: Install dependencies 🔧
+        run: |
+          python -VV
+          python -m site
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install setuptools "wheel>=0.36.2" "Cython>=0.29.21,<3"
+          python -m pip install ./wheels/numpy/*.whl
+
+      - name: "Build Wheel"
+        run: "python -m pip wheel --no-deps pandas==${{ matrix.version.pandas-version }} --no-build-isolation --wheel-dir ./wheels/pandas --verbose"
+
+      - name: "Upload Artefacts"
+        uses: actions/upload-artifact@v2
+        with:
+          name: "pandas-${{ matrix.version.pandas-version }}-${{ matrix.version.platform }}"
+          path: ./wheels/pandas/*.whl
