@@ -8,8 +8,6 @@ jobs:
   numpy:
     name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}"
     runs-on: ${{ matrix.version.platform }}
-    env:
-      USING_COVERAGE: '3.6,3.7,3.8,3.9'
 
     strategy:
       fail-fast: False
@@ -44,14 +42,14 @@ jobs:
     needs: numpy
     name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-pd-${{ matrix.version.pandas-version }}"
     runs-on: ${{ matrix.version.platform }}
-    env:
-      USING_COVERAGE: '3.6,3.7,3.8,3.9'
 
     strategy:
       fail-fast: False
       matrix:
         version:
-         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", pandas-version: "1.19.4"}
+         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", pandas-version: "1.2.0"}
+         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", pandas-version: "1.1.5"}
+         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", pandas-version: "1.0.5"}
 
     steps:
 
@@ -83,3 +81,46 @@ jobs:
         with:
           name: "pandas-${{ matrix.version.pandas-version }}-${{ matrix.version.platform }}"
           path: ./wheels/pandas/*.whl
+
+  matplotlib:
+    needs: numpy
+    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-pd-${{ matrix.version.matplotlib-version }}"
+    runs-on: ${{ matrix.version.platform }}
+
+    strategy:
+      fail-fast: False
+      matrix:
+        version:
+         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", matplotlib-version: "3.3.3"}
+         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", matplotlib-version: "3.2.2"}
+
+    steps:
+
+      - name: Setup Python 🐍
+        uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.10.0-alpha.3"
+
+      - name: Download Numpy Wheel
+        uses: actions/download-artifact@v2
+        with:
+          name: "numpy-${{ matrix.version.numpy-version }}-${{ matrix.version.platform }}"
+          path: ./wheels/numpy/
+
+
+      - name: Install dependencies 🔧
+        run: |
+          python -VV
+          python -m site
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install setuptools "wheel>=0.36.2" "certifi>=2020.06.20"
+          python -m pip install ./wheels/numpy/*.whl
+
+      - name: "Build Wheel"
+        run: "python -m pip wheel --no-deps matplotlib==${{ matrix.version.matplotlib-version }} --no-build-isolation --wheel-dir ./wheels/matplotlib --verbose"
+
+      - name: "Upload Artefacts"
+        uses: actions/upload-artifact@v2
+        with:
+          name: "matplotlib-${{ matrix.version.matplotlib-version }}-${{ matrix.version.platform }}"
+          path: ./wheels/matplotlib/*.whl
