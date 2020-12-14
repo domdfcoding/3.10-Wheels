@@ -16,6 +16,8 @@ jobs:
       matrix:
         version:
          - {platform: "ubuntu-20.04", numpy-version: "1.19.4"}
+         - {platform: "windows-2019", numpy-version: "1.19.3"}
+         - {platform: "macos-10.15", numpy-version: "1.19.3"}
 
     steps:
 
@@ -38,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "numpy-${{ matrix.version.numpy-version }}-${{ matrix.version.platform }}"
-          path: ./wheels/*.whl
+          path: ./wheels/numpy/*.whl
