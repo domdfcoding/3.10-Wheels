@@ -42,7 +42,7 @@ jobs:
 
   pandas:
     needs: numpy
-    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.pandas-version }}"
+    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-pd-${{ matrix.version.pandas-version }}"
     runs-on: ${{ matrix.version.platform }}
     env:
       USING_COVERAGE: '3.6,3.7,3.8,3.9'
@@ -51,7 +51,7 @@ jobs:
       fail-fast: False
       matrix:
         version:
-         - {platform: "ubuntu-20.04", pandas-version: "1.19.4"}
+         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", pandas-version: "1.19.4"}
 
     steps:
 
