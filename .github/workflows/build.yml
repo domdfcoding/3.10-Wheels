@@ -16,7 +16,6 @@ jobs:
          - {platform: "ubuntu-20.04", numpy-version: "1.19.4"}
 
     steps:
-
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
@@ -53,7 +52,6 @@ jobs:
          - {platform: "ubuntu-20.04", numpy-version: "1.19.4", pandas-version: "1.0.5"}
 
     steps:
-
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
@@ -97,7 +95,6 @@ jobs:
          - {platform: "ubuntu-20.04", numpy-version: "1.19.4", matplotlib-version: "3.2.2"}
 
     steps:
-
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
@@ -128,7 +125,7 @@ jobs:
 
   scipy:
     needs: numpy
-    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-mpl-${{ matrix.version.scipy-version }}"
+    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-scipy-${{ matrix.version.scipy-version }}"
     runs-on: ${{ matrix.version.platform }}
 
     strategy:
@@ -139,7 +136,6 @@ jobs:
          - {platform: "ubuntu-20.04", numpy-version: "1.19.4", scipy-version: "1.5.4"}
 
     steps:
-
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
@@ -170,7 +166,7 @@ jobs:
 
   cftime:
     needs: numpy
-    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-mpl-${{ matrix.version.cftime-version }}"
+    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-cftime-${{ matrix.version.cftime-version }}"
     runs-on: ${{ matrix.version.platform }}
 
     strategy:
@@ -180,7 +176,6 @@ jobs:
          - {platform: "ubuntu-20.04", numpy-version: "1.19.4", cftime-version: "1.3.0"}
 
     steps:
-
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
@@ -209,3 +204,37 @@ jobs:
         with:
           name: "cftime-${{ matrix.version.cftime-version }}-${{ matrix.version.platform }}"
           path: ./wheels/cftime/*.whl
+
+  lxml:
+    name: "Python 3.10-${{ matrix.version.platform }}-lxml-${{ matrix.version.lxml-version }}"
+    runs-on: ${{ matrix.version.platform }}
+
+    strategy:
+      fail-fast: False
+      matrix:
+        version:
+         - {platform: "ubuntu-20.04", lxml-version: "1.3.0"}
+
+    steps:
+      - name: Setup Python 🐍
+        uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.10.0-alpha.3"
+
+      - name: Install dependencies 🔧
+        run: |
+          python -VV
+          python -m site
+          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+          python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
+          python -m pip install git+https://github.com/cython/cython@5377ae7973bbfa89aa5431fb3e5f5b133231e6ba
+          sudo apt-get install libxml2-dev libxslt-dev
+
+      - name: "Build Wheel"
+        run: "python -m pip wheel --no-deps lxml==${{ matrix.version.lxml-version }} --no-build-isolation --wheel-dir ./wheels/lxml --verbose"
+
+      - name: "Upload Artefacts"
+        uses: actions/upload-artifact@v2
+        with:
+          name: "lxml-${{ matrix.version.lxml-version }}-${{ matrix.version.platform }}"
+          path: ./wheels/lxml/*.whl
