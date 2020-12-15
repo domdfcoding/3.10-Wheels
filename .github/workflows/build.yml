@@ -137,7 +137,6 @@ jobs:
         version:
          - {platform: "ubuntu-20.04", numpy-version: "1.19.4", scipy-version: "1.6.0rc1"}
          - {platform: "ubuntu-20.04", numpy-version: "1.19.4", scipy-version: "1.5.4"}
-         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", scipy-version: "1.4.1"}
 
     steps:
 
