@@ -205,6 +205,59 @@ jobs:
           name: "cftime-${{ matrix.version.cftime-version }}-${{ matrix.version.platform }}"
           path: ./wheels/cftime/*.whl
 
+  netCDF4:
+    needs:
+      - numpy
+      - cftime
+    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-netcdf4-${{ matrix.version.netcdf4-version }}"
+    runs-on: ${{ matrix.version.platform }}
+
+    strategy:
+      fail-fast: False
+      matrix:
+        version:
+         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", netcdf4-version: "1.5.5", cftime-version: "1.3.0"}
+
+    steps:
+      - name: Setup Python 🐍
+        uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.10.0-alpha.3"
+
+      - name: Download Numpy Wheel
+        uses: actions/download-artifact@v2
+        with:
+          name: "numpy-${{ matrix.version.numpy-version }}-${{ matrix.version.platform }}"
+          path: ./wheels/numpy/
+
+      - name: Download cftime Wheel
+        uses: actions/download-artifact@v2
+        with:
+          name: "cftime-${{ matrix.version.cftime-version }}-${{ matrix.version.platform }}"
+          path: ./wheels/cftime/
+
+      - name: Install dependencies 🔧
+        run: |
+          python -VV
+          python -m site
+          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+          python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
+          python -m pip install git+https://github.com/cython/cython@5377ae7973bbfa89aa5431fb3e5f5b133231e6ba
+          python -m pip install ./wheels/numpy/*.whl
+          python -m pip install ./wheels/cftime/*.whl
+          sudo add-apt-repository universe
+          sudo apt update
+          sudo apt install libhdf5-dev netcdf-bin libnetcdf-dev
+
+      - name: "Build Wheel"
+        run: "python -m pip wheel --no-deps netcdf4==${{ matrix.version.netcdf4-version }} --no-build-isolation --wheel-dir ./wheels/netcdf4 --verbose"
+
+      - name: "Upload Artefacts"
+        uses: actions/upload-artifact@v2
+        with:
+          name: "netcdf4-${{ matrix.version.netcdf4-version }}-${{ matrix.version.platform }}"
+          path: ./wheels/netcdf4/*.whl
+
   lxml:
     name: "Python 3.10-${{ matrix.version.platform }}-lxml-${{ matrix.version.lxml-version }}"
     runs-on: ${{ matrix.version.platform }}
@@ -213,7 +266,7 @@ jobs:
       fail-fast: False
       matrix:
         version:
-         - {platform: "ubuntu-20.04", lxml-version: "1.3.0"}
+         - {platform: "ubuntu-20.04", lxml-version: "4.6.2"}
 
     steps:
       - name: Setup Python 🐍
