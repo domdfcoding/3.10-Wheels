@@ -125,3 +125,46 @@ jobs:
         with:
           name: "matplotlib-${{ matrix.version.matplotlib-version }}-${{ matrix.version.platform }}"
           path: ./wheels/matplotlib/*.whl
+
+  scipy:
+    needs: numpy
+    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-mpl-${{ matrix.version.scipy-version }}"
+    runs-on: ${{ matrix.version.platform }}
+
+    strategy:
+      fail-fast: False
+      matrix:
+        version:
+         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", scipy-version: "1.6.0rc1"}
+         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", scipy-version: "1.5.4"}
+         - {platform: "ubuntu-20.04", numpy-version: "1.19.4", scipy-version: "1.4.1"}
+
+    steps:
+
+      - name: Setup Python 🐍
+        uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.10.0-alpha.3"
+
+      - name: Download Numpy Wheel
+        uses: actions/download-artifact@v2
+        with:
+          name: "numpy-${{ matrix.version.numpy-version }}-${{ matrix.version.platform }}"
+          path: ./wheels/numpy/
+
+      - name: Install dependencies 🔧
+        run: |
+          python -VV
+          python -m site
+          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+          python -m pip install "setuptools<=51.0.0" "wheel>=0.36.2" "pybind11>=2.4.3"
+          python -m pip install ./wheels/numpy/*.whl
+
+      - name: "Build Wheel"
+        run: "python -m pip wheel --no-deps scipy==${{ matrix.version.scipy-version }} --no-build-isolation --wheel-dir ./wheels/scipy --verbose"
+
+      - name: "Upload Artefacts"
+        uses: actions/upload-artifact@v2
+        with:
+          name: "scipy-${{ matrix.version.scipy-version }}-${{ matrix.version.platform }}"
+          path: ./wheels/scipy/*.whl
