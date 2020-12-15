@@ -282,9 +282,10 @@ jobs:
           python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
           python -m pip install git+https://github.com/cython/cython@5377ae7973bbfa89aa5431fb3e5f5b133231e6ba
           sudo apt-get install libxml2-dev libxslt-dev
+          git clone https://github.com/lxml/lxml
 
       - name: "Build Wheel"
-        run: "python -m pip wheel --no-deps lxml==${{ matrix.version.lxml-version }} --no-build-isolation --wheel-dir ./wheels/lxml --verbose"
+        run: "python -m pip wheel --no-deps ./lxml --no-build-isolation --wheel-dir ./wheels/lxml --verbose"
 
       - name: "Upload Artefacts"
         uses: actions/upload-artifact@v2
