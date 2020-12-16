@@ -179,6 +179,38 @@ jobs:
         with:
           name: "cftime-${{ matrix.version.cftime-version }}-${{ matrix.version.platform }}"
           path: ./wheels/cftime/*.whl
+
+  coverage:
+    name: "Python 3.10-${{ matrix.version.platform }}-coverage-${{ matrix.version.coverage-version }}"
+    runs-on: ${{ matrix.version.platform }}
+
+    strategy:
+      fail-fast: False
+      matrix:
+        version:
+         - {platform: "windows-2019", coverage-version: "5.3"}
+
+    steps:
+      - name: Setup Python 🐍
+        uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.10.0-alpha.3"
+
+      - name: Install dependencies 🔧
+        run: |
+          python -VV
+          python -m site
+          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+          python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
+
+      - name: "Build Wheel"
+        run: "python -m pip wheel --no-deps coverage==${{ matrix.version.coverage-version }} --no-build-isolation --wheel-dir ./wheels/coverage --verbose"
+
+      - name: "Upload Artefacts"
+        uses: actions/upload-artifact@v2
+        with:
+          name: "coverage-${{ matrix.version.coverage-version }}-${{ matrix.version.platform }}"
+          path: ./wheels/coverage/*.whl
 #
 #  netCDF4:
 #    needs:
