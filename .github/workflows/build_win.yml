@@ -135,9 +135,9 @@ jobs:
       - name: "Build Wheel"
         run: "python -m pip wheel --no-deps scipy==${{ matrix.version.scipy-version }} --no-build-isolation --wheel-dir ./wheels/scipy --verbose"
         env:
-          - BLAS: None
-          - LAPACK: None
-          - ATLAS: None
+          BLAS: None
+          LAPACK: None
+          ATLAS: None
 
       - name: "Upload Artefacts"
         uses: actions/upload-artifact@v2
