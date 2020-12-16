@@ -236,7 +236,7 @@ jobs:
           python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
 
       - name: "Build Wheel"
-        run: "python -m pip wheel --no-deps pillow==${{ matrix.version.pillow-version }} --no-build-isolation --wheel-dir ./wheels/pillow --verbose --install-option='--disable-zlib'"
+        run: "python -m pip wheel --no-deps pillow==${{ matrix.version.pillow-version }} --no-build-isolation --wheel-dir ./wheels/pillow --verbose --global-option='--disable-zlib'"
 
       - name: "Upload Artefacts"
         uses: actions/upload-artifact@v2
