@@ -107,187 +107,16 @@ jobs:
           name: "matplotlib-${{ matrix.version.matplotlib-version }}-${{ matrix.version.platform }}"
           path: ./wheels/matplotlib/*.whl
 
-  scipy:
-#    needs: numpy
-    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-scipy-${{ matrix.version.scipy-version }}"
-    runs-on: ${{ matrix.version.platform }}
-
-    strategy:
-      fail-fast: False
-      matrix:
-        version:
-         - {platform: "windows-2019", numpy-version: "1.19.3", scipy-version: "1.5.4"}
-
-    steps:
-      - name: Setup Python 🐍
-        uses: "actions/setup-python@v2"
-        with:
-          python-version: "3.10.0-alpha.3"
-
-      - name: Install dependencies 🔧
-        run: |
-          python -VV
-          python -m site
-          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
-          python -m pip install "setuptools<=51.0.0" "wheel>=0.36.2" "pybind11>=2.4.3"
-          python -m pip install "numpy @ https://github.com/domdfcoding/3.10-Wheels/raw/7f2832a5f712b5a0674c534e42dbf3dbacd75377/numpy-1.19.3-cp310-cp310-win_amd64.whl"
-
-      - name: "Build Wheel"
-        run: "python -m pip wheel --no-deps scipy==${{ matrix.version.scipy-version }} --no-build-isolation --wheel-dir ./wheels/scipy --verbose"
-        env:
-          BLAS: None
-          LAPACK: None
-          ATLAS: None
-
-      - name: "Upload Artefacts"
-        uses: actions/upload-artifact@v2
-        with:
-          name: "scipy-${{ matrix.version.scipy-version }}-${{ matrix.version.platform }}"
-          path: ./wheels/scipy/*.whl
-
-  cftime:
-#    needs: numpy
-    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-cftime-${{ matrix.version.cftime-version }}"
-    runs-on: ${{ matrix.version.platform }}
-
-    strategy:
-      fail-fast: False
-      matrix:
-        version:
-         - {platform: "windows-2019", numpy-version: "1.19.3", cftime-version: "1.3.0"}
-
-    steps:
-      - name: Setup Python 🐍
-        uses: "actions/setup-python@v2"
-        with:
-          python-version: "3.10.0-alpha.3"
-
-      - name: Install dependencies 🔧
-        run: |
-          python -VV
-          python -m site
-          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
-          python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
-          python -m pip install git+https://github.com/cython/cython@5377ae7973bbfa89aa5431fb3e5f5b133231e6ba
-          python -m pip install "numpy @ https://github.com/domdfcoding/3.10-Wheels/raw/7f2832a5f712b5a0674c534e42dbf3dbacd75377/numpy-1.19.3-cp310-cp310-win_amd64.whl"
-
-      - name: "Build Wheel"
-        run: "python -m pip wheel --no-deps cftime==${{ matrix.version.cftime-version }} --no-build-isolation --wheel-dir ./wheels/cftime --verbose"
-
-      - name: "Upload Artefacts"
-        uses: actions/upload-artifact@v2
-        with:
-          name: "cftime-${{ matrix.version.cftime-version }}-${{ matrix.version.platform }}"
-          path: ./wheels/cftime/*.whl
-
-  coverage:
-    name: "Python 3.10-${{ matrix.version.platform }}-coverage-${{ matrix.version.coverage-version }}"
-    runs-on: ${{ matrix.version.platform }}
-
-    strategy:
-      fail-fast: False
-      matrix:
-        version:
-         - {platform: "windows-2019", coverage-version: "5.3"}
-
-    steps:
-      - name: Setup Python 🐍
-        uses: "actions/setup-python@v2"
-        with:
-          python-version: "3.10.0-alpha.3"
-
-      - name: Install dependencies 🔧
-        run: |
-          python -VV
-          python -m site
-          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
-          python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
-
-      - name: "Build Wheel"
-        run: "python -m pip wheel --no-deps coverage==${{ matrix.version.coverage-version }} --no-build-isolation --wheel-dir ./wheels/coverage --verbose"
-
-      - name: "Upload Artefacts"
-        uses: actions/upload-artifact@v2
-        with:
-          name: "coverage-${{ matrix.version.coverage-version }}-${{ matrix.version.platform }}"
-          path: ./wheels/coverage/*.whl
-
-  pillow:
-    name: "Python 3.10-${{ matrix.version.platform }}-pillow-${{ matrix.version.pillow-version }}"
-    runs-on: ${{ matrix.version.platform }}
-
-    strategy:
-      fail-fast: False
-      matrix:
-        version:
-         - {platform: "windows-2019", pillow-version: "8.0.1"}
-
-    steps:
-      - name: Setup Python 🐍
-        uses: "actions/setup-python@v2"
-        with:
-          python-version: "3.10.0-alpha.3"
-
-      - name: Install dependencies 🔧
-        run: |
-          python -VV
-          python -m site
-          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
-          python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
-
-      - name: "Build Wheel"
-        run: "python -m pip wheel --no-deps pillow==${{ matrix.version.pillow-version }} --no-build-isolation --wheel-dir ./wheels/pillow --verbose --global-option='--disable-zlib'"
-
-      - name: "Upload Artefacts"
-        uses: actions/upload-artifact@v2
-        with:
-          name: "pillow-${{ matrix.version.pillow-version }}-${{ matrix.version.platform }}"
-          path: ./wheels/pillow/*.whl
-
-  kiwisolver:
-    name: "Python 3.10-${{ matrix.version.platform }}-kiwisolver-${{ matrix.version.kiwisolver-version }}"
-    runs-on: ${{ matrix.version.platform }}
-
-    strategy:
-      fail-fast: False
-      matrix:
-        version:
-         - {platform: "windows-2019", kiwisolver-version: "1.3.1"}
-
-    steps:
-      - name: Setup Python 🐍
-        uses: "actions/setup-python@v2"
-        with:
-          python-version: "3.10.0-alpha.3"
-
-      - name: Install dependencies 🔧
-        run: |
-          python -VV
-          python -m site
-          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
-          python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
-
-      - name: "Build Wheel"
-        run: "python -m pip wheel --no-deps kiwisolver==${{ matrix.version.kiwisolver-version }} --no-build-isolation --wheel-dir ./wheels/kiwisolver --verbose"
-
-      - name: "Upload Artefacts"
-        uses: actions/upload-artifact@v2
-        with:
-          name: "kiwisolver-${{ matrix.version.kiwisolver-version }}-${{ matrix.version.platform }}"
-          path: ./wheels/kiwisolver/*.whl
 #
-#  netCDF4:
-#    needs:
-#      - numpy
-#      - cftime
-#    name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}-netcdf4-${{ matrix.version.netcdf4-version }}"
+#  coverage:
+#    name: "Python 3.10-${{ matrix.version.platform }}-coverage-${{ matrix.version.coverage-version }}"
 #    runs-on: ${{ matrix.version.platform }}
 #
 #    strategy:
 #      fail-fast: False
 #      matrix:
 #        version:
-#         - {platform: "windows-2019", numpy-version: "1.19.3", netcdf4-version: "1.5.5", cftime-version: "1.3.0"}
+#         - {platform: "windows-2019", coverage-version: "5.3"}
 #
 #    steps:
 #      - name: Setup Python 🐍
@@ -295,11 +124,37 @@ jobs:
 #        with:
 #          python-version: "3.10.0-alpha.3"
 #
-#      - name: Download cftime Wheel
-#        uses: actions/download-artifact@v2
+#      - name: Install dependencies 🔧
+#        run: |
+#          python -VV
+#          python -m site
+#          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+#          python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
+#
+#      - name: "Build Wheel"
+#        run: "python -m pip wheel --no-deps coverage==${{ matrix.version.coverage-version }} --no-build-isolation --wheel-dir ./wheels/coverage --verbose"
+#
+#      - name: "Upload Artefacts"
+#        uses: actions/upload-artifact@v2
 #        with:
-#          name: "cftime-${{ matrix.version.cftime-version }}-${{ matrix.version.platform }}"
-#          path: ./wheels/cftime/
+#          name: "coverage-${{ matrix.version.coverage-version }}-${{ matrix.version.platform }}"
+#          path: ./wheels/coverage/*.whl
+#
+#  kiwisolver:
+#    name: "Python 3.10-${{ matrix.version.platform }}-kiwisolver-${{ matrix.version.kiwisolver-version }}"
+#    runs-on: ${{ matrix.version.platform }}
+#
+#    strategy:
+#      fail-fast: False
+#      matrix:
+#        version:
+#         - {platform: "windows-2019", kiwisolver-version: "1.3.1"}
+#
+#    steps:
+#      - name: Setup Python 🐍
+#        uses: "actions/setup-python@v2"
+#        with:
+#          python-version: "3.10.0-alpha.3"
 #
 #      - name: Install dependencies 🔧
 #        run: |
@@ -307,18 +162,12 @@ jobs:
 #          python -m site
 #          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
 #          python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
-#          python -m pip install git+https://github.com/cython/cython@5377ae7973bbfa89aa5431fb3e5f5b133231e6ba
-#          python -m pip install "numpy @ https://github.com/domdfcoding/3.10-Wheels/raw/7f2832a5f712b5a0674c534e42dbf3dbacd75377/numpy-1.19.3-cp310-cp310-win_amd64.whl"
-#          python -m pip install --find-links=./wheels/cftime cftime
-#          sudo add-apt-repository universe
-#          sudo apt update
-#          sudo apt install libhdf5-dev netcdf-bin libnetcdf-dev
 #
 #      - name: "Build Wheel"
-#        run: "python -m pip wheel --no-deps netcdf4==${{ matrix.version.netcdf4-version }} --no-build-isolation --wheel-dir ./wheels/netcdf4 --verbose"
+#        run: "python -m pip wheel --no-deps kiwisolver==${{ matrix.version.kiwisolver-version }} --no-build-isolation --wheel-dir ./wheels/kiwisolver --verbose"
 #
 #      - name: "Upload Artefacts"
 #        uses: actions/upload-artifact@v2
 #        with:
-#          name: "netcdf4-${{ matrix.version.netcdf4-version }}-${{ matrix.version.platform }}"
-#          path: ./wheels/netcdf4/*.whl
+#          name: "kiwisolver-${{ matrix.version.kiwisolver-version }}-${{ matrix.version.platform }}"
+#          path: ./wheels/kiwisolver/*.whl
