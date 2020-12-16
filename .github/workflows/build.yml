@@ -14,6 +14,7 @@ jobs:
       matrix:
         version:
          - {platform: "ubuntu-20.04", numpy-version: "1.19.4"}
+         - {platform: "windows-2019", numpy-version: "1.19.4"}
 
     steps:
       - name: Setup Python 🐍
