@@ -133,7 +133,7 @@ jobs:
           python -m pip install "numpy @ https://github.com/domdfcoding/3.10-Wheels/raw/7f2832a5f712b5a0674c534e42dbf3dbacd75377/numpy-1.19.3-cp310-cp310-win_amd64.whl"
 
       - name: "Build Wheel"
-        run: "python -m pip wheel --no-deps scipy==${{ matrix.version.scipy-version }} --no-build-isolation --wheel-dir ./wheels/scipy --verbose"
+        run: "BLAS=None LAPACK=None ATLAS=None python -m pip wheel --no-deps scipy==${{ matrix.version.scipy-version }} --no-build-isolation --wheel-dir ./wheels/scipy --verbose"
 
       - name: "Upload Artefacts"
         uses: actions/upload-artifact@v2
