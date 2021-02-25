@@ -37,6 +37,38 @@ jobs:
           name: "pywin32-${{ matrix.version.pywin32-version }}-${{ matrix.version.platform }}"
           path: ./wheels/pywin32/*.whl
 
+  pyreadline:
+    name: "Python 3.10-${{ matrix.version.platform }}-pyreadline-${{ matrix.version.pyreadline-version }}"
+    runs-on: ${{ matrix.version.platform }}
+
+    strategy:
+      fail-fast: False
+      matrix:
+        version:
+         - {platform: "windows-2019", pyreadline-version: "2.0"}
+
+    steps:
+      - name: Setup Python 🐍
+        uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.10.0-alpha.5"
+
+      - name: Install dependencies 🔧
+        run: |
+          python -VV
+          python -m site
+          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+          python -m pip install "setuptools<49.2.0" "wheel>=0.36.2"
+
+      - name: "Build Wheel"
+        run: "python -m pip wheel --no-deps git+https://github.com/osrf/pyreadline --no-build-isolation --wheel-dir ./wheels/pyreadline --verbose"
+
+      - name: "Upload Artefacts"
+        uses: actions/upload-artifact@v2
+        with:
+          name: "pyreadline-${{ matrix.version.pyreadline-version }}-${{ matrix.version.platform }}"
+          path: ./wheels/pyreadline/*.whl
+
   numpy:
     name: "Python 3.10-${{ matrix.version.platform }}-np-${{ matrix.version.numpy-version }}"
     runs-on: ${{ matrix.version.platform }}
