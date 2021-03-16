@@ -26,9 +26,9 @@ jobs:
         run: |
           python -VV
           python -m site
-          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+          python -m pip install pip --upgrade
           python -m pip install "setuptools<49.2.0" "wheel>=0.36.2"
-          python -m pip install git+https://github.com/cython/cython@5377ae7973bbfa89aa5431fb3e5f5b133231e6ba
+          python -m pip install cython --upgrade
 
       - name: "Build Wheel"
         run: "python -m pip wheel --no-deps numpy==${{ matrix.version.numpy-version }} --no-build-isolation --wheel-dir ./wheels/numpy --verbose"
@@ -69,9 +69,9 @@ jobs:
         run: |
           python -VV
           python -m site
-          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+          python -m pip install pip --upgrade
           python -m pip install setuptools "wheel>=0.36.2"
-          python -m pip install git+https://github.com/cython/cython@5377ae7973bbfa89aa5431fb3e5f5b133231e6ba
+          python -m pip install cython --upgrade
           python -m pip install ./wheels/numpy/*.whl
 
       - name: "Build Wheel"
@@ -111,7 +111,7 @@ jobs:
         run: |
           python -VV
           python -m site
-          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+          python -m pip install pip --upgrade
           python -m pip install setuptools "wheel>=0.36.2" "certifi>=2020.06.20"
           python -m pip install ./wheels/numpy/*.whl
 
@@ -152,7 +152,7 @@ jobs:
         run: |
           python -VV
           python -m site
-          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+          python -m pip install pip --upgrade
           python -m pip install "setuptools<=51.0.0" "wheel>=0.36.2" "pybind11>=2.4.3"
           python -m pip install ./wheels/numpy/*.whl
 
@@ -192,9 +192,9 @@ jobs:
         run: |
           python -VV
           python -m site
-          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+          python -m pip install pip --upgrade
           python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
-          python -m pip install git+https://github.com/cython/cython@5377ae7973bbfa89aa5431fb3e5f5b133231e6ba
+          python -m pip install cython --upgrade
           python -m pip install ./wheels/numpy/*.whl
 
       - name: "Build Wheel"
@@ -241,9 +241,9 @@ jobs:
         run: |
           python -VV
           python -m site
-          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+          python -m pip install pip --upgrade
           python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
-          python -m pip install git+https://github.com/cython/cython@5377ae7973bbfa89aa5431fb3e5f5b133231e6ba
+          python -m pip install cython --upgrade
           python -m pip install ./wheels/numpy/*.whl
           python -m pip install ./wheels/cftime/*.whl
           sudo add-apt-repository universe
@@ -279,9 +279,9 @@ jobs:
         run: |
           python -VV
           python -m site
-          python -m pip install git+https://github.com/pypa/pip@cfa013b91726dfcbadbff86b29c13df7eeef4d43 --upgrade
+          python -m pip install pip --upgrade
           python -m pip install "setuptools>=41.2" "wheel>=0.36.2"
-          python -m pip install git+https://github.com/cython/cython@5377ae7973bbfa89aa5431fb3e5f5b133231e6ba
+          python -m pip install cython --upgrade
           sudo apt-get install libxml2-dev libxslt-dev
           git clone https://github.com/lxml/lxml
 
