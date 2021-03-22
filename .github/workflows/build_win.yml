@@ -3,6 +3,7 @@ name: Windows Build
 
 on:
   push:
+    branches: ["master"]
 
 jobs:
   pywin32:

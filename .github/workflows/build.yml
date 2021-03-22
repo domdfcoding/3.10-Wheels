@@ -3,6 +3,7 @@ name: Linux Build
 
 on:
   push:
+    branches: ["master"]
 
 jobs:
   numpy:
