@@ -21,7 +21,7 @@ jobs:
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
-          python-version: "3.10.0-alpha.7"
+          python-version: "3.10.0-beta.1"
 
       - name: Install dependencies 🔧
         run: |
@@ -57,7 +57,7 @@ jobs:
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
-          python-version: "3.10.0-alpha.7"
+          python-version: "3.10.0-beta.1"
 
       - name: Download Numpy Wheel
         uses: actions/download-artifact@v2
@@ -100,7 +100,7 @@ jobs:
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
-          python-version: "3.10.0-alpha.7"
+          python-version: "3.10.0-beta.1"
 
       - name: Download Numpy Wheel
         uses: actions/download-artifact@v2
@@ -141,7 +141,7 @@ jobs:
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
-          python-version: "3.10.0-alpha.7"
+          python-version: "3.10.0-beta.1"
 
       - name: Download Numpy Wheel
         uses: actions/download-artifact@v2
@@ -181,7 +181,7 @@ jobs:
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
-          python-version: "3.10.0-alpha.7"
+          python-version: "3.10.0-beta.1"
 
       - name: Download Numpy Wheel
         uses: actions/download-artifact@v2
@@ -224,7 +224,7 @@ jobs:
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
-          python-version: "3.10.0-alpha.7"
+          python-version: "3.10.0-beta.1"
 
       - name: Download Numpy Wheel
         uses: actions/download-artifact@v2
@@ -274,7 +274,7 @@ jobs:
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
-          python-version: "3.10.0-alpha.7"
+          python-version: "3.10.0-beta.1"
 
       - name: Install dependencies 🔧
         run: |
