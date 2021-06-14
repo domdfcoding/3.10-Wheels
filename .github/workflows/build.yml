@@ -16,7 +16,7 @@ jobs:
         version:
          - {platform: "ubuntu-20.04", numpy-version: "1.21.0rc2"}
          - {platform: "ubuntu-20.04", numpy-version: "1.20.3"}
-         - {platform: "ubuntu-20.04", numpy-version: "1.19.5"}
+#         - {platform: "ubuntu-20.04", numpy-version: "1.19.5"}
 
     steps:
       - name: Setup Python 🐍
@@ -33,7 +33,9 @@ jobs:
           python -m pip install cython --upgrade
 
       - name: "Build Wheel"
-        run: "python -m pip wheel --no-deps numpy==${{ matrix.version.numpy-version }} --no-build-isolation --wheel-dir ./wheels/numpy --verbose"
+        run: |
+          wget https://raw.githubusercontent.com/domdfcoding/3.10-Wheels/master/numpy-${{ matrix.version.numpy-version }}.zip
+          "python -m pip wheel --no-deps ./numpy-${{ matrix.version.numpy-version }}.zip --no-build-isolation --wheel-dir ./wheels/numpy --verbose"
 
       - name: "Upload Artefacts"
         uses: actions/upload-artifact@v2
