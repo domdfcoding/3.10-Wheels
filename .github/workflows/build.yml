@@ -34,7 +34,7 @@ jobs:
 
       - name: "Build Wheel"
         run: |
-          "python -m pip wheel --no-deps https://raw.githubusercontent.com/domdfcoding/3.10-Wheels/master/numpy-${{ matrix.version.numpy-version }}.zip --no-build-isolation --wheel-dir ./wheels/numpy --verbose"
+          python -m pip wheel --no-deps https://raw.githubusercontent.com/domdfcoding/3.10-Wheels/master/numpy-${{ matrix.version.numpy-version }}.zip --no-build-isolation --wheel-dir ./wheels/numpy --verbose
 
       - name: "Upload Artefacts"
         uses: actions/upload-artifact@v2
